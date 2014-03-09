@@ -31,3 +31,5 @@ Realization
 I performed a number of geoprocessing steps in QGIS to generate a graticular vector grid with information on state boundaries, population and land area. The resulting data set is the main input for the interactive visualization which is written in D3/Javascript. 
 
 For a more detailed description of the project take a look at our homepage: [mappable.info/projects/travel-score/](http://mappable.info/projects/travel-score/)
+
+![alt text](http://dl.dropboxusercontent.com/u/54512470/Travel_Score_VIZ/img/screenshot.jpg "Preview")
