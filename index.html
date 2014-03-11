@@ -412,6 +412,167 @@ function ready(error, background, cells, land, places, data) {
 		}
 	}
 
+	function create_popup (d) {
+
+		zoom_temp = d3.behavior.zoom(); // temporarily store current zoom behaviour 
+		zoom_active = false; //temporarily disable functionalities
+		selection_active = false;
+		reset_active = false;
+		var m = path.centroid(d);
+			mx = d3.round(m[0]) + 10;
+			my = d3.round(m[1]) + (16 / zoom_scale);
+		if (zoom_scale == undefined){zoom_scale = 1;}
+		var h = 32 / zoom_scale;
+		var w = 200 / zoom_scale;
+		var stroke = 11 / zoom_scale;
+		
+		// get dimension for popup at current zoom level for proper positioning
+		var m_height = (countries_this.length +2) * h;
+		var m_width = w;
+
+		// prevents popup to be drawn below bottom bounds of current viewport
+		if (my + m_height > bound_bottom){ 
+			my = bound_bottom - m_height; 
+		}
+
+		// prevents popup to overlap with results window
+		if (mx - (300/zoom_scale) < bound_left && my + (200/zoom_scale) + m_height > bound_bottom){ 
+			mx = bound_left + (300/zoom_scale)
+			my = bound_bottom - (200/zoom_scale);
+		}
+
+		// prevent popup to be drawn beyond right bounds of current viewport
+		if (mx + m_width > bound_right){
+			mx = mx - m_width - 50/zoom_scale;
+		}
+
+		g.append("svg:rect")
+			.attr("x", mx)
+			.attr("y", my - h)
+			.attr("class", "popup")
+			.attr("width", w)
+			.attr("height", h)
+			.style("fill", "white")
+			.style("opacity", 0.75);
+
+		g.append("svg:text")
+			.attr("x", mx + 0.5*w)
+			.attr("y", my - 0.6*h)
+			.attr("class", "popup")
+			.attr("class", "prompt")
+			.attr("font-size", function (d) {return stroke +"px";})
+			.text("SELECT THOSE COUNTRIES INSIDE");
+
+		g.append("svg:text")
+			.attr("x", mx + 0.5*w)
+			.attr("y", my - 0.15*h)
+			.attr("class", "popup")
+			.attr("class", "prompt")
+			.attr("font-size", function (d) {return stroke +"px";})
+			.text("THIS CELL THAT YOU'VE VISITED");
+
+		for (var i=0;i<countries_this.length;i++) { // One rect per country
+					
+			g.append("svg:rect")
+				.attr("x", mx)
+				.attr("y", my + i * h)
+				.attr("class", "popup_country")
+				.attr("width", w)
+				.attr("height", h)
+				.attr("id", countries_this[i].replace(/ /g,''))
+				.attr("name", countries_this[i])
+				.attr("visited", "false")
+				.style("fill", "#eeeeee")
+				.style("opacity", 0.75)
+				.on("click", function (d){return popup_click(d, this);});
+
+			g.append("svg:text")
+				.attr("x", mx + 0.5*w)
+				.attr("y", my + 0.6*h + i * h)
+				.attr("class", "popup_country")
+				.attr("text-anchor", "middle")
+				.attr("font-family", "Muli")
+				.attr("font-size", function (d) {return stroke +"px";})
+				.attr("fill", "black")
+				.text(countries_this[i])
+				.attr("pointer-events", "none");
+		}	    
+		// close Button
+		g.append("svg:rect")
+			.attr("x", mx)
+			.attr("y", my + (countries_this.length) * h)
+			.attr("class", "popup_close")
+			.attr("width", w)
+			.attr("height", h)
+			.style("fill", "white")
+			.style("opacity", 0.75)
+			.style("cursor", "pointer")
+			.on("click", function (d) {
+				g.selectAll(".popup_country, .popup_close, .popup, .prompt").remove();
+				zoom_active = true; // re-enable functionalities
+				selection_active = true;
+				reset_active = true; 
+			});
+
+		g.append("svg:text")
+			.attr("x", mx + 0.5*w)
+			.attr("y", my + 0.6*h + (countries_this.length) * h)
+			.attr("class", "popup_close")
+			.attr("class", "prompt")
+			.attr("font-size", function (d) {return stroke +"px";})
+			.text("CLICK HERE TO CLOSE");
+
+		g.selectAll(".popup")
+			.style("visibility", "visible");
+	}
+
+	function popup_click (d, popup_field) {
+		statuscheck = d3.select("#" + popup_field.id).attr("visited");
+		if (statuscheck == 'false'){ // button not selected yet
+			d3.select("#" + popup_field.id)
+				.style("fill", "#ff9000")
+				.attr("visited", "true");
+			name = popup_field.getAttribute("name");
+
+			if (typeof countries_temp[z] == 'undefined') { // if country_temp for this popup doesn't exit yet
+				countries_temp[z] = new Array();
+				countries_temp[z].push(name);
+			}
+			else{ // if exists --> push name to countries_temp for this popup
+				countries_temp[z].push(name);
+				}
+
+			if (countries_count.hasOwnProperty(name)) { // country already visited
+					nr_visits = countries_count[name];
+					countries_count[name] = nr_visits +1;
+			}
+			else { // country not yet visited
+				countries_count[name] = 1;
+			}
+		}
+
+		if (statuscheck == 'true'){ // button already selected
+			d3.select("#" + popup_field.id)
+				.style("fill", "white")
+				.attr("visited", "false");
+			name = popup_field.getAttribute("name");
+
+			var u = countries_temp[z].indexOf(name); // delete country from country_temp for this popup
+			if(u != -1) {
+				countries_temp[z].splice(u, 1);
+			}
+
+			nr_visits = countries_count[name];
+			if (nr_visits == 1) { // if this is the only visited cell inside the country
+				delete countries_count[name];
+			}
+			if (nr_visits > 1) { // if there are other cells inside this country which have already been visited
+				countries_count[name] = nr_visits -1;
+			}
+		}
+	calculate_result(d, countries_count);
+	}
+	
 	function select_cell(d, thepath) { 
 		// empty variables inside function after reset button has been selected
 		if (result_trigger == true){
@@ -491,7 +652,7 @@ function ready(error, background, cells, land, places, data) {
 					pop_visited = pop_visited + pop_this;
 
 					// Popup erstellen
-					create_popup(d)		
+					create_popup (d)		
 				}
 				//// Cell already visited
 				else {
@@ -524,166 +685,6 @@ function ready(error, background, cells, land, places, data) {
 					g.selectAll(".popup")
 						.style("visibility", "hidden");
 				}
-			}
-			function create_popup (d) {
-
-				zoom_temp = d3.behavior.zoom(); // temporarily store current zoom behaviour 
-				zoom_active = false; //temporarily disable functionalities
-				selection_active = false;
-				reset_active = false;
-				var m = path.centroid(d);
-			  		mx = d3.round(m[0]) + 10;
-			  		my = d3.round(m[1]) + (16 / zoom_scale);
-			  	if (zoom_scale == undefined){zoom_scale = 1;}
-			  	var h = 32 / zoom_scale;
-			  	var w = 200 / zoom_scale;
-			  	var stroke = 11 / zoom_scale;
-			  	
-			  	// get dimension for popup at current zoom level for proper positioning
-			  	var m_height = (countries_this.length +2) * h;
-			  	var m_width = w;
-
-			  	// prevents popup to be drawn below bottom bounds of current viewport
-			  	if (my + m_height > bound_bottom){ 
-			  		my = bound_bottom - m_height; 
-			  	}
-
-			  	// prevents popup to overlap with results window
-			  	if (mx - (300/zoom_scale) < bound_left && my + (200/zoom_scale) + m_height > bound_bottom){ 
-			  		mx = bound_left + (300/zoom_scale)
-			  		my = bound_bottom - (200/zoom_scale);
-			  	}
-
-			  	// prevent popup to be drawn beyond right bounds of current viewport
-			  	if (mx + m_width > bound_right){
-			  		mx = mx - m_width - 50/zoom_scale;
-			  	}
-
-			  	g.append("svg:rect")
-				    .attr("x", mx)
-				    .attr("y", my - h)
-					.attr("class", "popup")
-				    .attr("width", w)
-				    .attr("height", h)
-				    .style("fill", "white")
-				    .style("opacity", 0.75);
-
-				g.append("svg:text")
-				    .attr("x", mx + 0.5*w)
-				    .attr("y", my - 0.6*h)
-				    .attr("class", "popup")
-				    .attr("class", "prompt")
-					.attr("font-size", function (d) {return stroke +"px";})
-				    .text("SELECT THOSE COUNTRIES INSIDE");
-
-				g.append("svg:text")
-				    .attr("x", mx + 0.5*w)
-				    .attr("y", my - 0.15*h)
-				    .attr("class", "popup")
-				    .attr("class", "prompt")
-					.attr("font-size", function (d) {return stroke +"px";})
-				    .text("THIS CELL THAT YOU'VE VISITED");
-
-				for (var i=0;i<countries_this.length;i++) { // One rect per country
-							
-					g.append("svg:rect")
-					    .attr("x", mx)
-					    .attr("y", my + i * h)
-						.attr("class", "popup_country")
-					    .attr("width", w)
-					    .attr("height", h)
-					    .attr("id", countries_this[i].replace(/ /g,''))
-					    .attr("name", countries_this[i])
-					    .attr("visited", "false")
-					    .style("fill", "#eeeeee")
-					    .style("opacity", 0.75)
-					    .on("click", function (d){return popup_click(d, this);});
-
-					g.append("svg:text")
-					    .attr("x", mx + 0.5*w)
-					    .attr("y", my + 0.6*h + i * h)
-					    .attr("class", "popup_country")
-					    .attr("text-anchor", "middle")
-					    .attr("font-family", "Muli")
-						.attr("font-size", function (d) {return stroke +"px";})
-						.attr("fill", "black")
-					    .text(countries_this[i])
-					    .attr("pointer-events", "none");
-				}	    
-				// close Button
-				g.append("svg:rect")
-				    .attr("x", mx)
-				    .attr("y", my + (countries_this.length) * h)
-					.attr("class", "popup_close")
-				    .attr("width", w)
-				    .attr("height", h)
-				    .style("fill", "white")
-				    .style("opacity", 0.75)
-					.style("cursor", "pointer")
-				    .on("click", function (d) {
-						g.selectAll(".popup_country, .popup_close, .popup, .prompt").remove();
-						zoom_active = true; // re-enable functionalities
-						selection_active = true;
-						reset_active = true; 
-					});
-
-				g.append("svg:text")
-				    .attr("x", mx + 0.5*w)
-				    .attr("y", my + 0.6*h + (countries_this.length) * h)
-				    .attr("class", "popup_close")
-				    .attr("class", "prompt")
-					.attr("font-size", function (d) {return stroke +"px";})
-				    .text("CLICK HERE TO CLOSE");
-
-				g.selectAll(".popup")
-				 	.style("visibility", "visible");
-			}
-
-			function popup_click (d, popup_field) {
-				statuscheck = d3.select("#" + popup_field.id).attr("visited");
-				if (statuscheck == 'false'){ // button not selected yet
-					d3.select("#" + popup_field.id)
-						.style("fill", "#ff9000")
-						.attr("visited", "true");
-					name = popup_field.getAttribute("name");
-
-					if (typeof countries_temp[z] == 'undefined') { // if country_temp for this popup doesn't exit yet
-						countries_temp[z] = new Array();
-						countries_temp[z].push(name);
-					}
-					else{ // if exists --> push name to countries_temp for this popup
-						countries_temp[z].push(name);
-						}
-
-					if (countries_count.hasOwnProperty(name)) { // country already visited
-							nr_visits = countries_count[name];
-			        		countries_count[name] = nr_visits +1;
-			    	}
-		    		else { // country not yet visited
-		    			countries_count[name] = 1;
-		    		}
-			    }
-
-			    if (statuscheck == 'true'){ // button already selected
-			    	d3.select("#" + popup_field.id)
-			    		.style("fill", "white")
-						.attr("visited", "false");
-					name = popup_field.getAttribute("name");
-
-					var u = countries_temp[z].indexOf(name); // delete country from country_temp for this popup
-					if(u != -1) {
-						countries_temp[z].splice(u, 1);
-					}
-
-					nr_visits = countries_count[name];
-					if (nr_visits == 1) { // if this is the only visited cell inside the country
-						delete countries_count[name];
-					}
-					if (nr_visits > 1) { // if there are other cells inside this country which have already been visited
-						countries_count[name] = nr_visits -1;
-					}
-				}
-			calculate_result(d, countries_count);
 			}
 		}
 	calculate_result(d, countries_count);
