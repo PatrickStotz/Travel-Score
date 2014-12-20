@@ -1,0 +1,522 @@
+NAME,SCALERANK,LATITUDE,LONGITUDE
+Abeche,3,13.84,20.83
+Abidjan,2,5.32,-4.04
+Abu Dhabi,3,24.47,54.37
+Abuja,3,9.08,7.53
+Acapulco,3,16.85,-99.92
+Accra,2,5.55,-0.22
+Addis Ababa,1,9.03,38.70
+Adelaide,3,-34.93,138.60
+Aden,3,12.78,45.01
+Agadez,3,17.00,7.98
+Ahmedabad,2,23.03,72.58
+Aleppo,2,36.23,37.17
+Alexandria,2,31.20,29.95
+Algiers,2,36.76,3.05
+Alice Springs,3,-23.70,133.88
+Almaty,3,43.32,76.92
+Amman,3,31.95,35.93
+Amritsar,3,31.64,74.87
+Amsterdam,1,52.35,4.92
+Anadyr,3,64.74,177.47
+Anchorage,2,61.22,-149.90
+Ankara,2,39.93,32.86
+Antananarivo,3,-18.92,47.52
+Antofagasta,3,-23.65,-70.40
+Apia,3,-13.84,-171.74
+Archangel,3,64.57,40.55
+Arctic Bay,3,73.03,-85.17
+Asansol,3,23.68,86.98
+Ashgabat,3,37.95,58.38
+Asmara,3,15.33,38.93
+Astana,3,51.18,71.43
+Asuncion,3,-25.30,-57.64
+Atar,3,20.52,-13.05
+Athens,1,37.98,23.73
+Atlanta,1,33.83,-84.40
+Auckland,1,-36.85,174.76
+Baghdad,1,33.34,44.39
+Bahia Blanca,3,-38.74,-62.27
+Baku,3,40.40,49.86
+Bamako,3,12.65,-8.00
+Bandar Seri Begawan,3,4.88,114.93
+Bandjarmasin,3,-3.33,114.58
+Bandung,2,-6.95,107.57
+Bangalore,1,12.97,77.56
+Banghazi,3,32.12,20.07
+Bangkok,1,13.75,100.52
+Bangui,3,4.37,18.56
+Baotou,2,40.65,109.82
+Barcelona,2,41.38,2.18
+Barnaul,3,53.35,83.75
+Barrow,3,71.29,-156.79
+Beijing,0,39.93,116.39
+Beira,3,-19.82,34.87
+Beirut,3,33.87,35.51
+Belem,2,-1.45,-48.48
+Belgrade,3,44.82,20.47
+Belmopan,3,17.25,-88.77
+Bergen,3,60.39,5.32
+Berlin,1,52.52,13.40
+Bethel,3,60.79,-161.76
+Bhilai,3,21.22,81.43
+Bhopal,3,23.25,77.41
+Bhubaneshwar,3,20.27,85.83
+Bishkek,3,42.87,74.59
+Bismarck,3,46.81,-100.78
+Bissau,3,11.87,-15.60
+Bloemfontein,3,-29.12,26.23
+Boa Vista,3,2.82,-60.67
+Bogota,0,4.60,-74.08
+Boise,3,43.61,-116.23
+Boston,2,42.33,-71.07
+Brasilia,2,-15.78,-47.92
+Bratsk,3,56.16,101.62
+Brazzaville,3,-4.26,15.28
+Brisbane,3,-27.46,153.04
+Brussels,2,50.83,4.33
+Bucharest,2,44.43,26.10
+Budapest,2,47.50,19.08
+Buenos Aires,1,-34.60,-58.40
+Buffalo,3,42.88,-78.88
+Bulawayo,3,-20.17,28.58
+Bumba,3,2.19,22.46
+Cairo,0,30.05,31.25
+Calgary,3,51.08,-114.08
+Cali,2,3.40,-76.50
+Campo Grande,3,-20.45,-54.62
+Canberra,3,-35.28,149.13
+Cancun,3,21.17,-86.83
+Cape Town,0,-33.92,18.43
+Caracas,1,10.50,-66.92
+Cartagena,3,10.40,-75.51
+Casablanca,1,33.60,-7.62
+Caxias,3,-4.83,-43.35
+Cayenne,3,4.93,-52.33
+Cebu,3,10.32,123.90
+Changchun,2,43.87,125.34
+Changsha,2,28.20,112.97
+Charlottetown,3,46.25,-63.13
+Chengdu,1,30.67,104.07
+Chennai,2,13.09,80.28
+Cheyenne,3,41.14,-104.82
+Chicago,1,41.83,-87.75
+Chihuahua,3,28.64,-106.08
+Chisinau,3,47.01,28.86
+Chita,3,52.06,113.47
+Chittagong,2,22.33,91.80
+Chongqing,2,29.56,106.59
+Christchurch,3,-43.54,172.63
+Churchill,3,58.77,-94.17
+Cincinnati,3,39.16,-84.46
+Ciudad Guayana,3,8.37,-62.62
+Cleveland,3,41.47,-81.69
+Coimbatore,3,11.00,76.95
+Cold Bay,3,55.20,-162.72
+Colombo,3,6.93,79.86
+Comodoro Rivadavia,3,-45.87,-67.50
+Conakry,3,9.53,-13.68
+Concepcion,3,-36.83,-73.05
+Cordoba,3,-31.40,-64.18
+Cotonou,3,6.40,2.52
+Cruzeiro do Sul,3,-7.63,-72.67
+Curitiba,2,-25.42,-49.32
+Cusco,3,-13.53,-71.97
+Dakar,1,14.72,-17.47
+Dallas,2,32.82,-96.84
+Damascus,2,33.50,36.30
+Dar es Salaam,2,-6.80,39.27
+Darwin,3,-12.43,130.85
+Davao,3,7.11,125.63
+Denver,1,39.74,-104.98
+Des Moines,3,41.58,-93.62
+Detroit,2,42.33,-83.08
+Dhaka,2,23.72,90.41
+Dickson,3,73.51,80.55
+Dili,3,-8.56,125.58
+Djenne,3,13.90,-4.55
+Dongguan,2,23.05,113.74
+Dongola,3,19.17,30.48
+Dubai,1,25.23,55.28
+Dublin,2,53.33,-6.25
+Durban,2,-29.87,30.98
+Dushanbe,3,38.56,68.77
+Edmonton,2,53.55,-113.50
+Enugu,3,6.45,7.50
+Erdenet,3,49.05,104.12
+Fairbanks,3,64.84,-147.71
+Feira de Santana,3,-12.25,-38.97
+Fez,3,34.05,-5.00
+Florianopolis,3,-27.58,-48.52
+Fort Good Hope,3,66.27,-128.63
+Fort Severn,3,55.98,-87.65
+Fortaleza,2,-3.75,-38.58
+Frankfurt,2,50.10,8.68
+Freetown,3,8.47,-13.23
+Fuzhou,2,26.08,119.30
+Gaborone,3,-24.65,25.91
+Geneva,1,46.21,6.14
+Georgetown,3,6.80,-58.17
+Ghardaia,3,32.49,3.67
+Glasgow,3,55.87,-4.25
+Goiania,2,-16.72,-49.30
+Gonder,3,12.61,37.46
+Grootfontein,3,-19.57,18.12
+Guadalajara,2,20.67,-103.33
+Guangzhou,2,23.14,113.33
+Guatemala,3,14.62,-90.53
+Guayaquil,2,-2.22,-79.92
+Guilin,3,25.28,110.28
+Guiyang,2,26.58,106.72
+Halifax,3,44.65,-63.60
+Hamburg,2,53.55,10.00
+Hami,3,42.83,93.52
+Hamilton,3,32.29,-64.78
+Hangzhou,2,30.25,120.17
+Hanoi,2,21.03,105.85
+Harare,3,-17.82,31.04
+Harbin,2,45.75,126.65
+Hargeysa,3,9.56,44.07
+Havana,2,23.13,-82.36
+Helena,3,46.59,-112.04
+Helsinki,2,60.18,24.93
+Hiroshima,2,34.39,132.44
+Ho Chi Minh City,2,10.78,106.70
+Hobart,3,-42.85,147.30
+Hong Kong,0,22.30,114.19
+Honiara,3,-9.44,159.95
+Honolulu,2,21.31,-157.86
+Hotan,3,37.10,79.93
+Houston,1,29.82,-95.34
+Huainan,3,32.63,116.98
+Huambo,3,-12.75,15.76
+Hyderabad,2,17.40,78.48
+Hyderabad,3,25.38,68.37
+Ica,3,-14.07,-75.73
+Iloilo,3,10.71,122.55
+Iquique,3,-20.25,-70.13
+Irkutsk,3,52.32,104.25
+Isfahan,3,32.70,51.70
+Islamabad,3,33.70,73.17
+Istanbul,0,41.10,29.01
+Jackson,3,32.30,-90.18
+Jaipur,2,26.92,75.81
+Jakarta,0,-6.17,106.83
+Jamshedpur,3,22.79,86.20
+Jeddah,2,21.52,39.22
+Jerusalem,3,31.78,35.21
+Ji-Parana,3,-10.83,-61.97
+Jiayuguan,3,39.82,98.30
+Jinan,2,36.67,117.00
+Johannesburg,1,-26.17,28.03
+Juneau,3,58.31,-134.42
+Kabul,1,34.52,69.18
+Kampala,3,0.32,32.58
+Kandahar,3,31.61,65.69
+Kano,2,12.00,8.52
+Kanpur,2,26.46,80.32
+Kaohsiung,3,22.63,120.27
+Karachi,2,24.87,66.99
+Kashi,3,39.48,75.97
+Kassala,3,15.46,36.39
+Kathmandu,3,27.72,85.32
+Kazan,3,55.75,49.13
+Khartoum,2,15.59,32.53
+Kiev,1,50.43,30.52
+Kikwit,3,-5.03,18.85
+Kingston,3,17.98,-76.77
+Kinshasa,1,-4.33,15.31
+Kobenhavn,2,55.68,12.56
+Kodiak,3,57.79,-152.41
+Kolkata,0,22.49,88.32
+Kolwezi,3,-10.72,25.47
+Kozhikode,3,11.25,75.77
+Krasnoyarsk,3,56.01,92.87
+Kuala Lumpur,2,3.17,101.70
+Kunming,2,25.07,102.68
+Kuwait,2,29.37,47.98
+La Paz,3,-16.50,-68.15
+Lagos,0,6.44,3.39
+Lahore,2,31.56,74.35
+Lanzhou,2,36.06,103.79
+Las Vegas,3,36.21,-115.22
+Leticia,3,-4.22,-69.94
+Lhasa,3,29.65,91.10
+Libreville,3,0.39,9.46
+Lilongwe,3,-13.98,33.78
+Lima,1,-12.05,-77.05
+Lisbon,2,38.72,-9.14
+Lome,3,6.13,1.22
+London,0,51.50,-0.12
+Los Angeles,0,33.99,-118.18
+Luanda,2,-8.84,13.23
+Lubumbashi,3,-11.68,27.48
+Lusaka,3,-15.42,28.28
+Luxor,3,25.70,32.65
+Lyon,3,45.77,4.83
+Macapa,3,0.03,-51.05
+Madrid,1,40.40,-3.68
+Madurai,3,9.92,78.12
+Magadan,3,59.57,150.81
+Makkah,2,21.43,39.82
+Malabo,3,3.75,8.78
+Male,3,4.17,73.50
+Managua,3,12.15,-86.27
+Manaus,3,-3.10,-60.00
+Manila,1,14.60,120.98
+Maputo,3,-25.96,32.59
+Mar del Plata,3,-38.00,-57.58
+Maraba,3,-5.35,-49.12
+Maracaibo,2,10.73,-71.66
+Maroua,3,10.60,14.32
+Marrakesh,3,31.63,-8.00
+Maseru,3,-29.32,27.48
+Mashhad,2,36.27,59.57
+Matadi,3,-5.82,13.45
+Mazatlan,3,23.22,-106.42
+Mbeya,3,-8.89,33.43
+Medan,2,3.58,98.65
+Medellin,2,6.28,-75.58
+Melbourne,1,-37.82,144.98
+Memphis,3,35.12,-90.00
+Mendoza,3,-32.88,-68.82
+Menongue,3,-14.67,17.70
+Merida,3,20.97,-89.62
+Mexico City,0,19.44,-99.13
+Miami,1,25.79,-80.22
+Milan,2,45.47,9.21
+Milwaukee,3,43.05,-87.92
+Minneapolis,2,44.98,-93.25
+Minsk,3,53.90,27.57
+Mitu,3,1.20,-70.17
+Mogadishu,3,2.07,45.37
+Mombasa,3,-4.04,39.69
+Monrovia,2,6.31,-10.80
+Monterrey,1,25.67,-100.33
+Montevideo,3,-34.86,-56.17
+Montreal,2,45.50,-73.58
+Moscow,0,55.75,37.62
+Multan,3,30.20,71.46
+Mumbai,0,19.02,72.86
+Munich,2,48.13,11.57
+Murmansk,3,68.97,33.10
+Muscat,3,23.61,58.59
+Nacala,3,-14.52,40.72
+Nagasaki,3,32.76,129.89
+Nagpur,2,21.17,79.09
+Nain,3,56.55,-61.69
+Nairobi,0,-1.28,36.82
+Nanchang,2,28.68,115.88
+Nanjing,2,32.05,118.78
+Nanning,2,22.82,108.32
+Naples,2,40.84,14.25
+Nashville,3,36.17,-86.78
+Nassau,3,25.08,-77.35
+Naypyidaw,3,19.77,96.12
+Ndele,3,8.41,20.65
+Ndjamena,3,12.11,15.05
+New Delhi,1,28.60,77.20
+New Orleans,2,30.00,-90.04
+New York,0,40.75,-73.98
+Newcastle,3,-32.85,151.82
+Niamey,3,13.52,2.12
+Nicosia,3,35.17,33.37
+Niyala,3,12.06,24.89
+Nizhneyansk,3,71.43,136.07
+Nizhny Novgorod,3,56.33,44.00
+Nome,3,64.51,-165.41
+Norfolk,3,36.85,-76.28
+Nouakchott,3,18.09,-15.98
+Novosibirsk,3,55.03,82.96
+Nukualofa,3,-21.14,-175.22
+Nuuk,3,64.20,-51.73
+Obo,3,5.40,26.50
+Oklahoma City,3,35.47,-97.52
+Omaha,3,41.24,-96.01
+Oran,3,35.71,-0.62
+Osaka,1,34.75,135.46
+Oslo,2,59.92,10.75
+Ottawa,3,45.42,-75.70
+Ouagadougou,3,12.37,-1.52
+Padang,3,-0.96,100.36
+Palana,3,59.08,159.95
+Palembang,3,-2.98,104.75
+Palermo,3,38.13,13.35
+Panama City,3,8.97,-79.53
+Paramaribo,3,5.84,-55.17
+Paris,0,48.87,2.33
+Patna,2,25.62,85.13
+Perm,3,58.00,56.25
+Perth,2,-31.96,115.84
+Peshawar,3,34.01,71.54
+Petropavlovsk Kamchatskiy,3,53.06,158.62
+Philadelphia,2,40.00,-75.17
+Phnom Penh,3,11.55,104.92
+Phoenix,2,33.54,-112.07
+Pierre,3,44.37,-100.35
+Pingxiang,3,27.62,113.85
+Pittsburgh,3,40.43,-80.00
+Point Hope,3,68.35,-166.81
+Port Elizabeth,3,-33.97,25.60
+Port Moresby,3,-9.46,147.19
+Port Sudan,3,19.62,37.22
+Port-au-Prince,3,18.54,-72.34
+Port-Gentil,3,-0.72,8.78
+Port-Vila,3,-17.73,168.32
+Portland,3,45.52,-122.68
+Porto Alegre,2,-30.05,-51.20
+Posadas,3,-27.36,-55.89
+Prague,2,50.08,14.47
+Praia,3,14.92,-23.52
+Pretoria,3,-25.71,28.23
+Prince Rupert,3,54.32,-130.33
+Prudhoe Bay,3,70.29,-148.67
+Puebla,2,19.05,-98.20
+Puerto Deseado,3,-47.75,-65.90
+Puerto Montt,3,-41.47,-72.93
+Pune,2,18.53,73.85
+Punta Arenas,3,-53.16,-70.94
+Pyongyang,2,39.02,125.75
+Qaraghandy,3,49.88,73.12
+Qiqihar,3,47.34,123.99
+Quebec,3,46.84,-71.25
+Quito,3,-0.21,-78.50
+Rabat,3,34.03,-6.84
+Raleigh,3,35.82,-78.64
+Rangoon,2,16.78,96.17
+Recife,2,-8.08,-34.92
+Regina,3,50.45,-104.62
+Repulse Bay,3,66.53,-86.28
+Resolute,3,74.68,-94.90
+Reykjavik,3,64.15,-21.95
+Riberalta,3,-10.98,-66.10
+Riga,3,56.95,24.10
+Rio de Janeiro,0,-22.93,-43.23
+Rio Gallegos,3,-51.63,-69.22
+Riyadh,0,24.64,46.77
+Rome,0,41.90,12.48
+Sabha,3,27.03,14.43
+Sacramento,3,38.58,-121.47
+Salt Lake City,3,40.78,-111.93
+Salvador,2,-12.97,-38.48
+Samara,3,53.20,50.15
+Samarqand,3,39.67,66.94
+San Antonio,3,29.49,-98.51
+San Cristobal,3,7.77,-72.25
+San Diego,2,32.82,-117.18
+San Francisco,1,37.74,-122.46
+San Jose,3,37.30,-121.85
+San Jose,3,9.94,-84.08
+San Juan,3,18.44,-66.13
+San Salvador,3,13.71,-89.20
+Sanaa,2,15.35,44.21
+Santa Cruz,3,-17.75,-63.23
+Santa Fe,3,35.69,-105.94
+Santarem,3,-2.43,-54.70
+Santiago,0,-33.45,-70.67
+Santo Domingo,2,18.47,-69.90
+Sao Paulo,0,-23.56,-46.63
+Sao Tome,3,0.33,6.73
+Sapporo,2,43.07,141.34
+Sarajevo,3,43.85,18.38
+Saskatoon,3,52.17,-106.67
+Seattle,2,47.57,-122.34
+Semarang,3,-6.97,110.42
+Seoul,1,37.57,127.00
+Sevastapol,3,44.60,33.46
+Seville,3,37.41,-5.98
+Shanghai,0,31.22,121.44
+Shantou,3,23.37,116.67
+Shenyeng,2,41.80,123.45
+Shenzhen,2,22.55,114.12
+Shiraz,3,29.63,52.57
+Singapore,0,1.29,103.86
+Sofia,3,42.68,23.32
+Sokoto,3,13.06,5.24
+St. John's,3,47.58,-52.68
+St. Louis,2,38.64,-90.24
+St. Petersburg,2,59.94,30.32
+Stanley,3,-51.70,-57.85
+Stockholm,1,59.35,18.10
+Sucre,3,-19.04,-65.26
+Surabaya,2,-7.25,112.75
+Surat,2,21.20,72.84
+Surgut,3,61.26,73.43
+Suva,3,-18.13,178.44
+Sydney,0,-33.92,151.19
+Tacna,3,-18.00,-70.25
+Taipei,1,25.04,121.57
+Taiyuan,2,37.88,112.55
+Tallinn,3,59.43,24.73
+Tamanrasset,3,22.79,5.52
+Tampa,2,27.95,-82.46
+Tampico,3,22.30,-97.87
+Tarakan,3,3.30,117.63
+Tashkent,1,41.31,69.29
+Tbilisi,3,41.73,44.79
+Tegucigalpa,3,14.10,-87.22
+Tehran,1,35.67,51.42
+Tel Aviv-Yafo,2,32.08,34.77
+Thessaloniki,3,40.70,22.89
+Thimphu,3,27.47,89.64
+Thunder Bay,3,48.45,-89.27
+Tianjin,2,39.13,117.20
+Tijuana,3,32.50,-117.08
+Tiksi,3,71.63,128.83
+Timbuktu,3,16.77,-3.02
+Tirana,3,41.33,19.82
+Tokyo,0,35.69,139.75
+Tomsk,3,56.49,84.98
+Toronto,1,43.70,-79.42
+Townsville,3,-19.25,146.77
+Tripoli,2,32.89,13.18
+Tromso,3,69.64,18.99
+Trondheim,3,63.42,10.42
+Trujillo,3,-8.12,-79.02
+Tunis,3,36.80,10.18
+Tuxtla Gutierrez,3,16.75,-93.15
+Ufa,3,54.79,56.04
+Ujungpandang,3,-5.14,119.43
+Ulaanbaatar,3,47.92,106.92
+Urumqi,1,43.81,87.58
+Valdez,3,61.14,-146.35
+Valdivia,3,-39.80,-73.25
+Valencia,3,10.23,-67.98
+Valencia,3,39.49,-0.40
+Valletta,3,35.90,14.51
+Valparaiso,3,-33.05,-71.62
+Vancouver,1,49.27,-123.12
+Varanasi,3,25.33,83.00
+Veracruz,3,19.18,-96.16
+Victoria,3,-4.62,55.45
+Victoria,3,48.43,-123.35
+Vienna,1,48.20,16.37
+Vientiane,3,17.97,102.60
+Vilhena,3,-12.72,-60.12
+Vilnius,3,54.68,25.32
+Vishakhapatnam,3,17.73,83.30
+Vladivostok,3,43.13,131.91
+Volgograd,3,48.71,44.50
+Warsaw,2,52.25,21.00
+"Washington, D.C.",0,38.90,-77.01
+Wau,3,7.70,27.99
+Wellington,3,-41.30,174.78
+Whitehorse,3,60.72,-135.05
+Windhoek,3,-22.57,17.08
+Winnipeg,3,49.88,-97.17
+Wuhan,2,30.58,114.27
+Xian,2,34.28,108.89
+Xining,3,36.62,101.77
+Yakutsk,3,62.03,129.74
+Yamoussoukro,3,6.82,-5.28
+Yaounde,3,3.87,11.52
+Yekaterinburg,3,56.85,60.60
+Yellowknife,3,62.44,-114.40
+Yerevan,3,40.18,44.51
+Yinchuan,3,38.47,106.27
+Zagreb,3,45.80,16.00
+Zanzibar,3,-6.16,39.20
+Zhengzhou,2,34.75,113.67
+Zibo,2,36.80,118.05
+Zinder,3,13.80,8.98
+Zurich,2,47.38,8.55

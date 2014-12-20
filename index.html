@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+<title>Travel Score</title>
+<link href='http://fonts.googleapis.com/css?family=Lora:700italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
+<style>
+
+h3 {margin-top: 15pt; margin-bottom: 6pt; font-size:14px; font-weight:bold; font-family:Lora; font-style: italic; text-transform:uppercase;}
+p {margin-top: 0; margin-bottom: 6pt;}
+body, #map, svg {height: 100%; margin: 0; width: 100%; float: left;}
+#info {width:520px; height: 595px;z -index:120; background: white; opacity: 0.8; visibility: hidden; box-shadow: 10px 20px 30px; -moz-border-radius: 10px;
+border-radius: 15px; padding:0px 10px; font-family: Muli; font-weight:normal; font-size:12px;}
+#info_out {width: 100%; height: 100%; z-index:110; background: #333333; opacity: 0.8; visibility: hidden}
+.place_labels_some {font-size: 3.4px; fill: #DDDDDD; font-family:Muli; visibility: hidden;}
+.place_labels_all {font-size: 2.2px; fill: #DDDDDD; font-family:Muli; visibility: hidden;}
+.place_symbols_some {fill: #DDD; pointer-events: none; visibility: hidden;}
+.place_symbols_all {fill: #DDD; pointer-events: none; visibility: hidden;}
+.preloader {text-anchor: middle; text-align: center; font-family: Lora; font-style: italic; font-size: 16px; font-weight: bold; font-style: italic; fill: #eeeeee;}
+.land {pointer-events: none; stroke-width: 0.2; stroke: #DDDDDD; fill: #222222;}
+.cells {stroke-width: 0.1; stroke: #DDDDDD; fill: #ff9000; fill-opacity:0;}
+.head {font-family: Lora; font-size: 22px; font-weight: bold; font-style: italic; fill: white;}
+.category {text-anchor: start; font-family: Muli; font-size: 11px; fill: #333333;}
+.counter {text-anchor: end; font-family: Muli; font-size: 11px; font-weight: bold; fill: #333333;}
+.reset {text-anchor: middle; font-family: Lora; font-size: 13px; font-weight: bold; font-style: italic; fill: #333333; pointer-events: none;}
+.logo {text-anchor: middle; text-align: center; font-family: Lora; font-style: italic; font-size: 15px; font-weight: bold; font-style: italic; fill:#eeeeee; cursor:pointer;}
+.prompt {text-anchor: middle; font-family: Lora; font-weight: bold; font-style: italic; fill: #333333; pointer-events: none;}
+
+</style>
+</head>
+<!--[if IE 6]>
+  <div id="browser-error">
+  <p>This interactive graphic requires a browser with SVG support, such as <a href="http://www.google.com/chrome">Chrome</a>, <a href="http://www.mozilla.org/en-US/firefox/new/">Firefox</a>, <a href="http://www.apple.com/safari/">Safari</a> or the latest <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">Internet Explorer</a>. </p>
+  <img src="http://dl.dropboxusercontent.com/u/54512470/Travel_Score_VIZ/img/screenshot.jpg" width="100%" alt="Error - static preview">
+  <div id="maincontainer" style="display:none;">
+		<![endif]-->
+<!--[if IE 7]>
+  <div id="browser-error">
+  <p>This interactive graphic requires a browser with SVG support, such as <a href="http://www.google.com/chrome">Chrome</a>, <a href="http://www.mozilla.org/en-US/firefox/new/">Firefox</a>, <a href="http://www.apple.com/safari/">Safari</a> or the latest <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">Internet Explorer</a>. </p>
+  <img src="http://dl.dropboxusercontent.com/u/54512470/Travel_Score_VIZ/img/screenshot.jpg" width="100%" alt="Error - static preview">
+  <div id="maincontainer" style="display:none;">
+		<![endif]-->
+<!--[if IE 8]>
+  <div id="browser-error">
+  <p>This interactive graphic requires a browser with SVG support, such as <a href="http://www.google.com/chrome">Chrome</a>, <a href="http://www.mozilla.org/en-US/firefox/new/">Firefox</a>, <a href="http://www.apple.com/safari/">Safari</a> or the latest <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">Internet Explorer</a>. </p>
+  <img src="http://dl.dropboxusercontent.com/u/54512470/Travel_Score_VIZ/img/screenshot.jpg" width="100%" alt="Error - static preview">
+  <div id="maincontainer" style="display:none;">
+		<![endif]-->
+<body>
+<div id = "map"></div>
+<body bgcolor="#555555">
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="http://d3js.org/d3.geo.projection.v0.min.js" charset="utf-8"></script>
+<script>
+
+var width = 1400,
+	height = 700;
+
+var formatA = d3.format(".2f");
+
+//Create SVG element and viewBox
+
+var svg = d3.select("#map")
+	.append("svg")
+	.attr("width", width)
+	.attr("height", height);
+
+if (navigator.appName != "Microsoft Internet Explorer" || navigator.appName != "Netscape") {
+	svg.attr("viewBox", "0 0 " + width + " " + height); //viewBox zoom for good browsers only
+}
+
+var g = svg.append("g");
+
+// create preloader
+g.append("svg:text")
+    .attr("x", 700)
+    .attr("y", 340)
+    .attr("class", "preloader")
+    .text("MAP LOADING...");
+
+g.append("svg:text")
+    .attr("x", 700)
+    .attr("y", 360)
+    .attr("class", "preloader")
+    .text("THIS MIGHT TAKE A FEW SECONDS");
+
+var projection = d3.geo.naturalEarth()
+	.scale(250)
+	.translate([width / 2, height / 2]);
+
+var path = d3.geo.path()
+   	.projection(projection);
+
+var s = 1; //set initial zoom level
+var zoom_scale = 1; // register current zoom level in global namespace
+
+var zoom = d3.behavior.zoom()
+	.scaleExtent([1,5])
+		.on("zoom",function (d) { return zooming(d)});
+
+var info_out = d3.select("#map")
+	.append("div")
+	.attr("id", "info_out")
+	.style("z-index", "100")
+	.style("position", "absolute");
+
+var info = d3.select("#map")
+	.append("div")
+	.attr("id", "info")
+	.style("z-index", "100")
+	.style("position", "absolute");
+
+var country = d3.map();
+var pop_share = d3.map();
+var area_share = d3.map();
+var z = 0; //popup-counter
+var selection_active = true;
+var zoom_active = true;
+var reset_active = true;
+var bound_top, bound_right, bound_bottom, bound_left = [];
+var result_trigger = false;
+var pan = false;
+
+// Load data
+queue()
+	.defer(d3.json, "./data/background.json")
+	.defer(d3.json, "./data/reference.json")
+	.defer(d3.json, "./data/souvereignty.json")
+	.defer(d3.csv, "./data/places.csv")
+	.defer(d3.csv, "./data/data.csv", function (d) { 
+		country.set(d.TARGET_FID, d.country);
+		pop_share.set(d.TARGET_FID, d.Pop_share);
+		area_share.set(d.TARGET_FID, d.Area_share);
+		})
+	.await(ready);
+
+function zooming (d) {
+	if (zoom_active == true){
+	var t = d3.event.translate,
+  	s = d3.event.scale;
+	cell_stroke_temp = cell_stroke_temp /s; //adjust stroke-width of cells for hover in/out during zoom
+	t[0] = Math.min(0, Math.max((s-1)*(-width), t[0]));
+	t[1] = Math.min(0, Math.max((s-1)*(-height), t[1]));
+	zoom.translate(t);
+	
+	// get bounds. used later to properly position pop-ups
+	bound_top = -t[1]/s;
+	bound_right = -t[0]/s + width/s;
+	bound_bottom = -t[1]/s + height/s;
+	bound_left = -t[0]/s;
+
+	g.attr("transform", "translate(" + t + "),scale(" + s + ")");
+	g.selectAll(".land").style("stroke-width", 0.2 / s);
+	g.selectAll(".cells").style("stroke-width", 0.1 / s);
+	
+	// handle place labels according to zoom scale
+	if (s <=2.5) {
+		g.selectAll(".place_labels_all, .place_labels_some, .place_symbols_some, .place_symbols_all").style("visibility", "hidden");
+	}
+	if (s > 2.5 & s < 3.6) {
+		g.selectAll(".place_labels_all, .place_symbols_all").style("visibility", "hidden");
+		g.selectAll(".place_labels_some, .place_symbols_some").style("visibility", "visible");
+	}
+	if (s >= 3.6) {
+		g.selectAll(".place_labels_all, .place_symbols_all").style("visibility", "visible");
+		g.selectAll(".place_labels_some, .place_symbols_some").style("visibility", "hidden");			
+		}
+	zoom_scale = s;
+	}
+	else {d3.behavior.zoom(zoom_temp);} // restore temporarily saved zoom properties
+}
+
+function ready(error, background, cells, land, places, data) {
+
+	var cells = topojson.feature(cells, cells.objects.reference)
+	var land = topojson.feature(land, land.objects.layer1)
+	var background = topojson.feature(background, background.objects.background)
+
+    var surface_visited = 0.00;
+    var pop_visited = 0.00;
+    var total_visited = 0.00;
+    var countries_visited = 0;
+    var countries_count = {};
+    var countries_temp = {};
+
+    // draw water as background
+    g.selectAll("path")
+    	.data(background.features)
+    	.enter().append("path")
+    	.attr("d", path)
+    	.attr("pointer-events", "none")
+    	.style("fill", "#838383");
+
+    // add land area + borders
+    g.append("path")
+		.datum(land)
+		.attr("d", path)
+		.attr("class", "land");
+
+	// add cells
+	g.selectAll("path")
+		.data(cells.features)
+		.enter().append("path")
+		.attr("d", path)
+		.attr("class", "cells")
+		.attr("visited", "false")
+		.on("mouseover", function (d) {hover(d, this);})
+		.on("mouseout", function (d) {out(d, this);})
+		.on("mousedown", function (d) {pan = false;}) // mouse moving during click -> only pan no selection 
+		.on("mousemove", function (d) {pan = true;})
+		.on("mouseup", function (d) {
+			if (pan == true){}
+			else {return select_cell(d, this);}
+		});
+	
+	// place labels to be drawn left
+	place_labels_some_left = ["Los Angeles", "Philadelphia", "Mexico City", "Maracaibo", "Goiania", "Sao Paulo", "Abidjan", "Monrovia", "Kuwait", "Jeddah", "Geneva", "Zurich", "London", "Dublin", "Munich", "Vienna", "Stockholm", "Oslo", "Helsinki", "Alexandria", "Delhi", "Mumbai", "Bangalore", "Kolkata", "Shenzhen", "Guangzhou", "Chengdu", "Nanning", "Changsha", "Baotou", "Beijing", "Taiyuan", "Changchun", "Hiroshima", "Nanjing", "Jinan", "Medan", "Jakarta", "Sydney"];
+	place_labels_all_left = ["Victoria", "San Francisco", "Tijuana", "Omaha", "San Antonio", "Houston", "New Orleans", "Anchorage", "Repulse Bay", "Fort Severn", "Nain", "Ottawa", "Toronto", "Pittsburg", "New York", "Pittsburgh", "Mexico City", "Acapulco", "Tuxtla Gutierrez", "San Salvador", "Kingston", "Port-au-Prince", "Cartagena", "Maracaibo", "Valencia", "Macapa", "Goiania", "Feira de Santana", "Sao Paulo", "Valparaiso", "Buenos Aires", "Bloemfontein", "Pretoria", "Gaborone", "Zanzibar", "Sao Tome", "Kinshasa", "Khartoum", "Kassala", "Lome", "Cotonou", "Casablanca", "Rabat", "Jeddah", "Beirut", "Tel Aviv-Yafo", "Lyon", "Madrid", "London", "Stockholm", "Helsinki", "Warsaw", "Kozhikode", "Bangalore", "Mumbai", "Nagpur", "Karachi", "Jamshedpur", "Varanasi", "Delhi", "Kabul", "Peshawar", "Lahore", "Bishkek", "Shenzhen", "Changsha", "Nanning", "Guangzhou", "Huainan", "Xining", "Jinan", "Hiroshima", "Iloilo", "Bandung", "Semarang"];
+
+	// place labels to be drawn low
+	place_labels_some_low = ["San Diego", "Washington, D.C.", "Mexico City", "Jerusalem", "Zurich", "Geneva", "Peshawar", "Shenzhen", "Hong Kong"];
+	place_labels_all_low = ["Washington, D.C.", "Philadelphia", "Cincinnati", "Pittsburg", "San Jose", "Tijuana", "Puebla", "Tegucigalpa", "San Juan", "Santiago", "Johannesburg", "Lome", "Accra", "Jerusalem", "Peshawar", "Bandung", "Nanning", "Hangzhou", "Nanchang"];
+
+	g.selectAll("labels")
+		.data(places)
+		.enter().append("text")
+		.filter(function (d) { return d.SCALERANK <= 2 })
+		.attr("class", "place_labels_some")
+		.attr("pointer-events", "none")
+	    .attr("transform", function(d) { return "translate(" + projection([d.LONGITUDE, d.LATITUDE]) + ")"; })
+	    .attr("dy", ".35em")
+		.attr("text-anchor", function(d) {
+			if (place_labels_some_left.indexOf(d.NAME) > -1) {return "end"}
+			else {return "start"}
+			})
+	    .text(function (d) { return d.NAME; })
+		.attr("x", function(d) {
+			if (place_labels_some_left.indexOf(d.NAME) > -1) {return -1.5}
+			else {return 1.5}
+			})
+	    .attr("y", function (d) {
+			if (place_labels_some_low.indexOf(d.NAME) > -1) {return 1.5}
+			else {return -1.5}
+			});
+
+	g.selectAll("symbols")
+	    .data(places)
+	    .enter().append("svg:circle")
+	   	.filter(function(d) { return d.SCALERANK <= 2 })
+	   	.attr("class", "place_symbols_some")
+	   	.attr("pointer-events", "none")
+	    .attr("transform", function(d) { return "translate(" + projection([d.LONGITUDE, d.LATITUDE]) + ")"; })
+		.attr("r", 0.7);
+
+	g.selectAll("labels")
+		.data(places)
+		.enter().append("text")
+		.attr("class", "place_labels_all")
+		.attr("pointer-events", "none")
+	    .attr("transform", function (d) { return "translate(" + projection([d.LONGITUDE, d.LATITUDE]) + ")"; })
+	    .attr("dy", ".35em")
+		.attr("text-anchor", function (d) {
+			if (place_labels_all_left.indexOf(d.NAME) > -1) {return "end"}
+			else {return "start"}
+			})
+	    .text(function (d) { return d.NAME; })
+		.attr("x", function(d) {
+			if (place_labels_all_left.indexOf(d.NAME) > -1) {return -1}
+			else {return 1}
+			})
+	    .attr("y", function (d) {
+			if (place_labels_some_low.indexOf(d.NAME) > -1) {return 1}
+			else {return -1}
+			});
+
+	g.selectAll("symbols")
+	    .data(places)
+	    .enter().append("svg:circle")
+	   	.attr("class", "place_symbols_all")
+	   	.attr("pointer-events", "none")
+	    .attr("transform", function(d) { return "translate(" + projection([d.LONGITUDE, d.LATITUDE]) + ")"; })
+		.attr("r", 0.35);
+
+  	svg.call(zoom)
+
+  	// Create SVG-Elements for Results window
+	svg.append("svg:rect")
+	    .attr("x", 18)
+	    .attr("y", 500)
+		.attr("class", "results")
+	    .attr("width", 270)
+	    .attr("height", 40)
+	    .style("fill", "#FF9000")
+	    .style("opacity", 0.9);  	
+
+	svg.append("svg:text")
+	    .attr("x", 28)
+	    .attr("y", 527)
+	    .attr("class", "results")
+	    .attr("class", "head")
+	    .attr("text-anchor", "start")
+	    .text("TRAVEL SCORE")
+	   	.style("opacity", 0.9);
+
+	svg.append("svg:text")
+	    .attr("x", 278)
+	    .attr("y", 527)
+	    .attr("class", "results")
+	    .attr("class", "head")
+	   	.attr("id", "total_visited")
+	    .attr("text-anchor", "end")
+	    .text("0.00");
+
+	svg.append("svg:rect")
+	    .attr("x", 18)
+	    .attr("y", 540)
+		.attr("class", "results")
+	    .attr("width", 270)
+	    .attr("height", 70)
+	    .style("fill", "white")
+	    .style("opacity", 0.8);  	
+
+	svg.append("svg:text")
+	    .attr("x", 28)
+	    .attr("y", 560)
+	    .attr("class", "results")
+	    .attr("class", "category")
+	    .text("Countries visited:");
+	
+	svg.append("svg:text")
+	    .attr("x", 28)
+	    .attr("y", 580)
+	    .attr("class", "results")
+	   	.attr("class", "category")
+	    .text("Share of the world's population: ");
+	
+	svg.append("svg:text")
+	    .attr("x", 28)
+	    .attr("y", 600)
+	    .attr("class", "results")
+	    .attr("class", "category")
+	    .text("Share of the earth's land surface:");
+
+	svg.append("svg:text")
+	    .attr("x", 278)
+	    .attr("y", 560)
+	    .attr("class", "results")
+	    .attr("class", "counter")
+	   	.attr("id", "countries_visited")
+	    .text("0 / 197");
+
+	svg.append("svg:text")
+	    .attr("x", 278)
+	    .attr("y", 580)
+	    .attr("class", "results")
+	   	.attr("class", "counter")
+	   	.attr("id", "pop_visited")
+	    .text("0.00 %");
+
+	svg.append("svg:text")
+	    .attr("x", 278)
+	    .attr("y", 600)
+	    .attr("class", "results")
+	   	.attr("class", "counter")
+	   	.attr("id", "surface_visited")
+	    .text("0.00 %");
+
+	// Add Reset button
+	svg.append("svg:rect")
+	    .attr("x", 18)
+	    .attr("y", 620)
+		.attr("class", "button")
+	    .attr("width", 270)
+	    .attr("height", 32)
+	    .attr("cursor", "pointer")
+	    .style("fill", "white")
+	    .style("opacity", 0.8)
+	   	.on("click", function (d){return reset_results (d);});
+
+	svg.append("svg:text")
+	    .attr("x", 152)
+	    .attr("y", 641)
+	    .attr("class", "button")
+	    .attr("class", "reset")
+	    .text("RESET ALL SELECTIONS");
+
+	function hover(d, thepath) {
+		if (d3.select(thepath).attr("visited") == "false") {
+			cell_stroke_temp = d3.select(thepath).style("stroke-width")
+			cell_stroke_hover = cell_stroke_temp.slice(0, - 2) * 15 +"px";
+			d3.select(thepath).style({
+				"cursor":"pointer",
+				"stroke": "white",
+				"stroke-width": cell_stroke_hover,
+				"fill": "#FF4000",
+				"fill-opacity": "0.55"
+			})
+		}
+	}
+
+	function out (d, thepath) {
+		if (d3.select(thepath).attr("visited") == "false") {
+			d3.select(thepath).style({
+				"stroke": "#white",
+				"stroke-width": cell_stroke_temp,
+				"fill-opacity": "0",
+				"fill": "#ff9000",
+			})
+		}
+	}
+
+	function create_popup (d) {
+
+		zoom_temp = d3.behavior.zoom(); // temporarily store current zoom behaviour 
+		zoom_active = false; //temporarily disable functionalities
+		selection_active = false;
+		reset_active = false;
+		var m = path.centroid(d);
+			mx = d3.round(m[0]) + 10;
+			my = d3.round(m[1]) + (16 / zoom_scale);
+		if (zoom_scale == undefined){zoom_scale = 1;}
+		var h = 32 / zoom_scale;
+		var w = 200 / zoom_scale;
+		var stroke = 11 / zoom_scale;
+		
+		// get dimension for popup at current zoom level for proper positioning
+		var m_height = (countries_this.length +2) * h;
+		var m_width = w;
+
+		// prevents popup to be drawn below bottom bounds of current viewport
+		if (my + m_height > bound_bottom){ 
+			my = bound_bottom - m_height; 
+		}
+
+		// prevents popup to overlap with results window
+		if (mx - (300/zoom_scale) < bound_left && my + (200/zoom_scale) + m_height > bound_bottom){ 
+			mx = bound_left + (300/zoom_scale)
+			my = bound_bottom - (200/zoom_scale);
+		}
+
+		// prevent popup to be drawn beyond right bounds of current viewport
+		if (mx + m_width > bound_right){
+			mx = mx - m_width - 50/zoom_scale;
+		}
+
+		g.append("svg:rect")
+			.attr("x", mx)
+			.attr("y", my - h)
+			.attr("class", "popup")
+			.attr("width", w)
+			.attr("height", h)
+			.style("fill", "white")
+			.style("opacity", 0.75);
+
+		g.append("svg:text")
+			.attr("x", mx + 0.5*w)
+			.attr("y", my - 0.6*h)
+			.attr("class", "popup")
+			.attr("class", "prompt")
+			.attr("font-size", function (d) {return stroke +"px";})
+			.text("SELECT THOSE COUNTRIES INSIDE");
+
+		g.append("svg:text")
+			.attr("x", mx + 0.5*w)
+			.attr("y", my - 0.15*h)
+			.attr("class", "popup")
+			.attr("class", "prompt")
+			.attr("font-size", function (d) {return stroke +"px";})
+			.text("THIS CELL THAT YOU'VE VISITED");
+
+		for (var i=0;i<countries_this.length;i++) { // One rect per country
+					
+			g.append("svg:rect")
+				.attr("x", mx)
+				.attr("y", my + i * h)
+				.attr("class", "popup_country")
+				.attr("width", w)
+				.attr("height", h)
+				.attr("id", countries_this[i].replace(/ /g,''))
+				.attr("name", countries_this[i])
+				.attr("visited", "false")
+				.style("fill", "#eeeeee")
+				.style("opacity", 0.75)
+				.on("click", function (d){return popup_click(d, this);});
+
+			g.append("svg:text")
+				.attr("x", mx + 0.5*w)
+				.attr("y", my + 0.6*h + i * h)
+				.attr("class", "popup_country")
+				.attr("text-anchor", "middle")
+				.attr("font-family", "Muli")
+				.attr("font-size", function (d) {return stroke +"px";})
+				.attr("fill", "black")
+				.text(countries_this[i])
+				.attr("pointer-events", "none");
+		}	    
+		// close Button
+		g.append("svg:rect")
+			.attr("x", mx)
+			.attr("y", my + (countries_this.length) * h)
+			.attr("class", "popup_close")
+			.attr("width", w)
+			.attr("height", h)
+			.style("fill", "white")
+			.style("opacity", 0.75)
+			.style("cursor", "pointer")
+			.on("click", function (d) {
+				g.selectAll(".popup_country, .popup_close, .popup, .prompt").remove();
+				zoom_active = true; // re-enable functionalities
+				selection_active = true;
+				reset_active = true; 
+			});
+
+		g.append("svg:text")
+			.attr("x", mx + 0.5*w)
+			.attr("y", my + 0.6*h + (countries_this.length) * h)
+			.attr("class", "popup_close")
+			.attr("class", "prompt")
+			.attr("font-size", function (d) {return stroke +"px";})
+			.text("CLICK HERE TO CLOSE");
+
+		g.selectAll(".popup")
+			.style("visibility", "visible");
+	}
+
+	function popup_click (d, popup_field) {
+		statuscheck = d3.select("#" + popup_field.id).attr("visited");
+		if (statuscheck == 'false'){ // button not selected yet
+			d3.select("#" + popup_field.id)
+				.style("fill", "#ff9000")
+				.attr("visited", "true");
+			name = popup_field.getAttribute("name");
+
+			if (typeof countries_temp[z] == 'undefined') { // if country_temp for this popup doesn't exit yet
+				countries_temp[z] = new Array();
+				countries_temp[z].push(name);
+			}
+			else{ // if exists --> push name to countries_temp for this popup
+				countries_temp[z].push(name);
+				}
+
+			if (countries_count.hasOwnProperty(name)) { // country already visited
+					nr_visits = countries_count[name];
+					countries_count[name] = nr_visits +1;
+			}
+			else { // country not yet visited
+				countries_count[name] = 1;
+			}
+		}
+
+		if (statuscheck == 'true'){ // button already selected
+			d3.select("#" + popup_field.id)
+				.style("fill", "white")
+				.attr("visited", "false");
+			name = popup_field.getAttribute("name");
+
+			var u = countries_temp[z].indexOf(name); // delete country from country_temp for this popup
+			if(u != -1) {
+				countries_temp[z].splice(u, 1);
+			}
+
+			nr_visits = countries_count[name];
+			if (nr_visits == 1) { // if this is the only visited cell inside the country
+				delete countries_count[name];
+			}
+			if (nr_visits > 1) { // if there are other cells inside this country which have already been visited
+				countries_count[name] = nr_visits -1;
+			}
+		}
+	calculate_result(d, countries_count);
+	}
+	
+	function select_cell(d, thepath) { 
+		// empty variables inside function after reset button has been selected
+		if (result_trigger == true){
+			countries_temp = {}
+			countries_count = {}
+			result_trigger = false;
+		}
+
+		if (selection_active == true && result_trigger == false) {
+
+			g.selectAll(".popup_country, .popup_close, .popup, .prompt")
+				.remove();
+
+			surface_this = parseFloat(area_share.get(d.id));
+			pop_this = parseFloat(pop_share.get(d.id));
+			countries_this = country.get(d.id).split(",");
+
+			if (countries_this.length == 1) {
+			
+				// Cell not visited yet
+				if (d3.select(thepath).attr("visited") == "false") {
+					d3.select(thepath).attr("visited", true).style({
+		    			"stroke-width": "0.1",
+						"fill-opacity": "0.8",
+						"fill": "#ff9000",
+					})
+					
+					surface_visited = surface_visited + surface_this;
+					pop_visited = pop_visited + pop_this;
+					name = countries_this[0]
+					if (name !== ""){ // prevents areas without land surface to be counted as unknown/empty country
+						if (countries_count.hasOwnProperty(name)) { // country already visited
+								nr_visits = countries_count[name];
+				        		countries_count[name] = nr_visits +1;
+				    	}
+			    		else { // country not yet visited
+			    			countries_count[name] = 1;
+			    		}
+					}
+				}
+				
+				// Cell already visited
+				else {
+					d3.select(thepath).attr("visited", false).style({
+						"fill-opacity": "0"
+					})
+
+					surface_visited = surface_visited - surface_this;
+					pop_visited = pop_visited - pop_this;
+					name = countries_this[0]
+					nr_visits = countries_count[name];
+					if (nr_visits == 1) { // if this is the only visited cell inside the country
+						delete countries_count[name];
+					}
+					if (nr_visits > 1) { // if there are other cells inside this country which have already been visited
+						countries_count[name] = nr_visits -1;
+					}
+				}
+			}
+			if (countries_this.length > 1) {
+				z = z+1; // create country_counter for this popup
+
+				if (d3.select(thepath).attr("popup-counter") == null){
+					d3.select(thepath).attr("popup-counter", z);
+				}
+				
+				//// Cell not visited yet
+				if (d3.select(thepath).attr("visited") == "false") {
+
+					d3.select(thepath).attr("visited", true).style({
+		    			"stroke-width": "0.1",
+						"fill-opacity": "0.8",
+						"fill": "#ff9000",
+					})
+					
+					surface_visited = surface_visited + surface_this;
+					pop_visited = pop_visited + pop_this;
+
+					// Popup erstellen
+					create_popup (d)		
+				}
+				//// Cell already visited
+				else {
+					d3.select(thepath).attr("visited", false).style({
+						"fill-opacity": "0"
+					})
+
+					surface_visited = surface_visited - surface_this;
+					pop_visited = pop_visited - pop_this;
+
+					z2 = parseFloat(d3.select(thepath).attr("popup-counter")) // go to popup for this cell
+					
+					if (typeof countries_temp[z2] != 'undefined'){
+						for (var i = 0; i < countries_temp[z2].length; i++) {
+							name = countries_temp[z2][i]
+							nr_visits = countries_count[name];
+
+							if (nr_visits == 1) { // if this is the only visited cell inside the country --> remove
+								delete countries_count[name];
+							}
+							if (nr_visits > 1) { // if there are other cells inside this country which have already been visited --> counter - 1
+								countries_count[name] = nr_visits -1;
+							}
+						}
+					}
+
+					// remove popup when de-selecting cell
+					g.selectAll(".popup_country, .popup_close")
+						.remove();
+					g.selectAll(".popup")
+						.style("visibility", "hidden");
+				}
+			}
+		}
+	calculate_result(d, countries_count);
+	}
+
+	function calculate_result (d, countries_count) {
+		Object.size = function(obj) {
+		    var size = 0, key;
+			    for (key in obj) {
+			        if (obj.hasOwnProperty(key)) size++;
+			    }
+				return size;
+		};
+		var countries_visited = Object.size(countries_count);
+		surface_visited = Math.max(0, surface_visited); // prevent values from becoming -0,00
+		total_visited = (pop_visited + surface_visited + (countries_visited / 1.97)) / 3
+		total_visited = Math.max(0, total_visited),pop_visited = Math.max(0, pop_visited); // prevent values from becoming -0,00
+
+		d3.selectAll("#total_visited").text(formatA(total_visited));
+		d3.selectAll("#countries_visited").text(countries_visited + " / 197");
+		d3.selectAll("#pop_visited").text(formatA(pop_visited) + " %");
+		d3.selectAll("#surface_visited").text(formatA(surface_visited) + " %");
+
+
+		if (total_visited < 1){d3.selectAll(".star1, .star2, .star3, .star4, .star5").style("visibility", "hidden");}
+		if (total_visited >= 1 && total_visited <2){d3.selectAll(".star1").style("visibility", "visible");d3.selectAll(".star2, .star3, .star4, .star5").style("visibility", "hidden");}
+		if (total_visited >= 2 && total_visited <4){d3.selectAll(".star1, .star2").style("visibility", "visible");d3.selectAll(".star3, .star4, .star5").style("visibility", "hidden");}		
+		if (total_visited >= 4 && total_visited <8){d3.selectAll(".star1, .star2, .star3").style("visibility", "visible");d3.selectAll(".star4, .star5").style("visibility", "hidden");}		
+		if (total_visited >= 8 && total_visited <16){d3.selectAll(".star1, .star2, .star3, .star4").style("visibility", "visible");d3.selectAll(".star5").style("visibility", "hidden");}
+		if (total_visited >= 16){d3.selectAll(".star1, .star2, .star3, .star4, .star5").style("visibility", "visible");}
+	}
+
+	function reset_results (d) {
+		if (reset_active == true) {
+			surface_visited = 0.00;
+	    	pop_visited = 0.00;
+	    	total_visited = 0.00;
+	    	countries_visited = 0;
+	    	delete countries_count, countries_temp;
+	    	var countries_count = {};
+			var countries_temp = {};
+	    	result_trigger = true;
+	    	d3.selectAll(".cells").style({
+					"stroke": "#white",
+					"stroke-width": cell_stroke_temp,
+					"fill-opacity": "0",
+					"fill": "#ff9000",
+				})
+	    	calculate_result(d, countries_count);
+		}
+	}
+
+	//remove preloader when done with loading
+	g.selectAll(".preloader").remove();
+}
+
+// Add orange stars
+for (var i = 0; i < 5; i++) { 
+	svg.append("svg:image")
+		.attr("xlink:href", "./img/star_orange.png")
+		.attr("class", "star" +(i+1))
+		.attr("width", 34)
+		.attr("height", 34)
+		.attr("x", 53 + i*40)
+	    .attr("y", 455)
+	    .attr("pointer-events", "all")
+	    .style("visibility", "hidden");
+}
+
+// Add 5 stars
+svg.append("svg:image")
+	.attr("xlink:href", "./img/5stars.png")
+	.attr("width", 200)
+	.attr("height", 46)
+	.attr("x", 50)
+    .attr("y", 450)
+	.attr("pointer-events", "all");
+
+// Info popup
+svg.append("svg:image")
+	.attr("xlink:href", "./img/i.png")
+	.attr("width", 40)
+	.attr("height", 40)
+	.attr("x", 10)
+    .attr("y", 0)
+    .on("click", function (d) {return openinfo(d);})
+	.attr("pointer-events", "all")
+	.attr("cursor", "pointer");
+
+// Mappable-Logo
+svg.append("svg:text")
+    .attr("x", width / 2)
+    .attr("y", height - 5)
+    .attr("class", "logo")
+    .text("MAPPABLE.INFO")
+	.on("click", function() {window.open("http://mappable.info"); });
+
+// Text for Info popup
+info.html("<h3 style='margin-top: 15px;'>how your travel score is calculated:</h3><p>Based on the grid cells you've selected, three numbers are calculated:</p><OL><LI>The percentage of the world's countries that you've visited<LI>The share of the world's population that lives in these areas<LI>The share of the earth's land surface that lies inside the selected grid cells</OL><p>The overall travel score is the mean of these three numbers. Of course this calculation method is kind of arbitrary. It's just my approach to measure how much of the world a person has seen.</p><h3>where the data comes from:</h3><p>State boundaries by Natural Earth (Tom Patterson, Nathaniel Vaughn Kelso &amp; many others)<br>1:50m Cultural Vectors - 197 souvereign states, v. 2.0.0 (2012)  <A HREF='http://www.naturalearthdata.com/downloads/50m-cultural-vectors/'> link</A></p><p>Place labels by Natural Earth (Tom Patterson, Nathaniel Vaughn Kelso &amp; many others)<br>1:110m Cultural Vectors - Populated places, v. 2.0.0 (2012)  <A HREF='http://www.naturalearthdata.com/downloads/110m-cultural-vectors/'>link</A></p><p>Population data by CIESIN at Columbia University<br>Population Count Grid Future Estimates, v3 (2010)  <A HREF='http://sedac.ciesin.columbia.edu/data/set/gpw-v3-population-count-future-estimates/data-download'>link</A></p><p>Land area data by CIESIN at Columbia University<br>Land and Geographic Unit Area Grids, v3 (1990, 1995, 2000, 2005, 2010, 2015)  <A HREF='http://sedac.ciesin.columbia.edu/data/set/gpw-v3-land-geographic-unit-area/data-download'>link</A></p><h3>about this project:</h3><p>This project was realized by PatrickStotz (<A HREF='http://twitter.com/PatrickStotz'>@PatrickStotz</A>).</p><p>I'm endlessly fascinated by maps, dataviz &amp; urbanism, plus I love to travel! Having a large world map with pin needles hanging in our living room, I always wanted to build a modern, interactive version of this map.</p><p>If you're interested in the technical details behind this project take a look at the project description on <A HREF='http://mappable.info/projects/travel-score'>mappable.info</A></p><p>Want to get in touch with me, just contact me on <A HREF='http://twitter.com/PatrickStotz'>twitter</A> or at mappable(at)gmx.de</p><p>Please note, that this map is not optimised for Internet Explorer or older browsers in general. There might as well be problems on less powerful or mobile devices, as the visualizations takes heavy use of SVG in browser rendering.</p>").on("click", function (d) {return closeinfo(d);});
+info_out.style("top", "0px").style("left", "0px").html("").on("click", function (d) {return closeinfo(d);});
+
+
+// dynamic positioning of info popup
+function openinfo (d) {
+var w = window.innerWidth;
+var h = window.innerHeight;	
+info.style("top", Math.max(0,(h - 595) /2) +"px").style("left", ((w - 520) / 2)+"px").style("visibility", "visible");
+info_out.style("visibility", "visible");
+zoom_temp = d3.behavior.zoom(); // temporarily store current zoom behaviour 
+zoom_active = false; // temporarily disable zoom & pan
+}
+
+function closeinfo (d) {
+info.style("visibility", "hidden");
+info_out.style("visibility", "hidden");
+zoom_active = true; // re-enable zoom & pan
+}
+</script>
+</body>
