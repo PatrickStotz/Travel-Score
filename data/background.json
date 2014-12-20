@@ -1,0 +1,1 @@
+{"type":"Topology","objects":{"background":{"type":"GeometryCollection","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"geometries":[{"type":"Polygon","arcs":[[0]]}]}},"arcs":[[[0,0],[0,9999],[9999,0],[0,-9999],[-9999,0]]],"transform":{"scale":[0.035983598359835986,0.017981798179817984],"translate":[-179.9,-89.9]}}
