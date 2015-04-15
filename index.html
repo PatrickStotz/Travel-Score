@@ -12,7 +12,7 @@
 
 h3 {margin-top: 15pt; margin-bottom: 6pt; font-size:14px; font-weight:bold; font-family:Lora; font-style: italic; text-transform:uppercase;}
 p {margin-top: 0; margin-bottom: 6pt;}
-body, #map, svg {height: 100%; margin: 0; width: 100%; float: left;}
+#map, svg {height: 100%; margin: 0; width: 100%; float: left;}
 #info {width:520px; height: 595px;z -index:120; background: white; opacity: 0.8; visibility: hidden; box-shadow: 10px 20px 30px; -moz-border-radius: 10px;
 border-radius: 15px; padding:0px 10px; font-family: Muli; font-weight:normal; font-size:12px;}
 #info_out {width: 100%; height: 100%; z-index:110; background: #333333; opacity: 0.8; visibility: hidden}
@@ -29,6 +29,9 @@ border-radius: 15px; padding:0px 10px; font-family: Muli; font-weight:normal; fo
 .reset {text-anchor: middle; font-family: Lora; font-size: 13px; font-weight: bold; font-style: italic; fill: #333333; pointer-events: none;}
 .logo {text-anchor: middle; text-align: center; font-family: Lora; font-style: italic; font-size: 15px; font-weight: bold; font-style: italic; fill:#eeeeee; cursor:pointer;}
 .prompt {text-anchor: middle; font-family: Lora; font-weight: bold; font-style: italic; fill: #333333; pointer-events: none;}
+#footer_container {clear: both; text-align:center; padding-top: 8px;}
+.footer_button {height:14px; cursor:pointer}
+.footer {display:inline-block; padding:0px 2px; vertical-align:middle; text-align: center; margin-bottom: 0px;}
 
 </style>
 </head>
@@ -57,6 +60,7 @@ border-radius: 15px; padding:0px 10px; font-family: Muli; font-weight:normal; fo
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 <script src="http://d3js.org/queue.v1.min.js"></script>
 <script src="http://d3js.org/d3.geo.projection.v0.min.js" charset="utf-8"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script>
 
 var width = 1400,
@@ -805,5 +809,25 @@ info.style("visibility", "hidden");
 info_out.style("visibility", "hidden");
 zoom_active = true; // re-enable zoom & pan
 }
+
+// Social sharing for Twitter / Facebook. Using jQuery to change tweet text interactively (including current travelscore).
+$(document).ready(function () {
+$('#btnTweet').click(function (e) {
+	score_for_sharing = document.getElementById("total_visited").textContent
+	var textToTweet = "I've explored " + score_for_sharing + " % of the world. What's your #travelscore? http://travelscore.org by @PatrickStotz";
+	var twtLink = 'https://twitter.com/home?status=' + encodeURIComponent(textToTweet);
+	window.open(twtLink,'_blank');
+	});
+$('#btnFB').click(function (e) {
+	var fbLink = 'https://www.facebook.com/sharer/sharer.php?u=http://travelscore.org';
+	window.open(fbLink,'_blank');
+	});
+});
+</script>
+<div id="footer_container">
+	<p class="footer category" style="color:#DDDDDD">Share your score:</p>
+	<img class="footer_button footer" id="btnTweet" src="./img/t_logo.png"></button>
+	<img class="footer_button footer" id="btnFB" src="./img/f_logo.png"></button>
+</div>
 </script>
 </body>
