@@ -32,6 +32,6 @@ I performed a number of geoprocessing steps in QGIS to generate a graticular vec
 
 For a more detailed description of the project take a look at our homepage: [mappable.info/projects/travel-score/](http://mappable.info/projects/travel-score/)
 
-A full-sized, interactive view of Travel Score can be found [here](http://travelscore.org)
+A full-sized, interactive view of Travel Score can be found [here](https://patrickstotz.github.io/Travel-Score/)
 
 ![alt text](/img/screenshot.jpg "Preview")

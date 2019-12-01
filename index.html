@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
 <html>
 <head>
-<title>Travel Score</title>
-<link href='http://fonts.googleapis.com/css?family=Lora:700italic' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
+<meta charset="utf-8">
+<meta name="Description" CONTENT="An interactive map that visualizes how much of the world you've explored. Select countries, places & cities you've been to and get your travel score">
+<meta name="author" content="Patrick Stotz">
+<meta name="keywords" content="map, travelling, visited places, dataviz, mappable">
+<title>Travel Score - visualize how much of the world you've explored</title>
+<link href='https://fonts.googleapis.com/css?family=Lora:700italic' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Muli' rel='stylesheet' type='text/css'>
 <style>
 
 h3 {margin-top: 15pt; margin-bottom: 6pt; font-size:14px; font-weight:bold; font-family:Lora; font-style: italic; text-transform:uppercase;}
 p {margin-top: 0; margin-bottom: 6pt;}
-body, #map, svg {height: 100%; margin: 0; width: 100%; float: left;}
+#map, svg {height: 100%; margin: 0; width: 100%; float: left;}
 #info {width:520px; height: 595px;z -index:120; background: white; opacity: 0.8; visibility: hidden; box-shadow: 10px 20px 30px; -moz-border-radius: 10px;
 border-radius: 15px; padding:0px 10px; font-family: Muli; font-weight:normal; font-size:12px;}
 #info_out {width: 100%; height: 100%; z-index:110; background: #333333; opacity: 0.8; visibility: hidden}
@@ -26,34 +29,39 @@ border-radius: 15px; padding:0px 10px; font-family: Muli; font-weight:normal; fo
 .reset {text-anchor: middle; font-family: Lora; font-size: 13px; font-weight: bold; font-style: italic; fill: #333333; pointer-events: none;}
 .logo {text-anchor: middle; text-align: center; font-family: Lora; font-style: italic; font-size: 15px; font-weight: bold; font-style: italic; fill:#eeeeee; cursor:pointer;}
 .prompt {text-anchor: middle; font-family: Lora; font-weight: bold; font-style: italic; fill: #333333; pointer-events: none;}
+#footer_container {clear: both; text-align:center; padding-top: 8px;}
+.footer_button {height:14px; cursor:pointer}
+.footer {display:inline-block; padding:0px 2px; vertical-align:middle; text-align: center; margin-bottom: 0px;}
 
 </style>
+
 </head>
 <!--[if IE 6]>
   <div id="browser-error">
-  <p>This interactive graphic requires a browser with SVG support, such as <a href="http://www.google.com/chrome">Chrome</a>, <a href="http://www.mozilla.org/en-US/firefox/new/">Firefox</a>, <a href="http://www.apple.com/safari/">Safari</a> or the latest <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">Internet Explorer</a>. </p>
-  <img src="http://dl.dropboxusercontent.com/u/54512470/Travel_Score_VIZ/img/screenshot.jpg" width="100%" alt="Error - static preview">
+  <p>This interactive graphic requires a browser with SVG support, such as <a href="https://www.google.com/chrome">Chrome</a>, <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>, <a href="https://www.apple.com/safari/">Safari</a> or the latest <a href="https://windows.microsoft.com/en-us/internet-explorer/download-ie">Internet Explorer</a>. </p>
+  <img src="https://dl.dropboxusercontent.com/u/54512470/Travel_Score_VIZ/img/screenshot.jpg" width="100%" alt="Error - static preview">
   <div id="maincontainer" style="display:none;">
 		<![endif]-->
 <!--[if IE 7]>
   <div id="browser-error">
-  <p>This interactive graphic requires a browser with SVG support, such as <a href="http://www.google.com/chrome">Chrome</a>, <a href="http://www.mozilla.org/en-US/firefox/new/">Firefox</a>, <a href="http://www.apple.com/safari/">Safari</a> or the latest <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">Internet Explorer</a>. </p>
-  <img src="http://dl.dropboxusercontent.com/u/54512470/Travel_Score_VIZ/img/screenshot.jpg" width="100%" alt="Error - static preview">
+  <p>This interactive graphic requires a browser with SVG support, such as <a href="https://www.google.com/chrome">Chrome</a>, <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>, <a href="https://www.apple.com/safari/">Safari</a> or the latest <a href="https://windows.microsoft.com/en-us/internet-explorer/download-ie">Internet Explorer</a>. </p>
+  <img src="https://dl.dropboxusercontent.com/u/54512470/Travel_Score_VIZ/img/screenshot.jpg" width="100%" alt="Error - static preview">
   <div id="maincontainer" style="display:none;">
 		<![endif]-->
 <!--[if IE 8]>
   <div id="browser-error">
-  <p>This interactive graphic requires a browser with SVG support, such as <a href="http://www.google.com/chrome">Chrome</a>, <a href="http://www.mozilla.org/en-US/firefox/new/">Firefox</a>, <a href="http://www.apple.com/safari/">Safari</a> or the latest <a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie">Internet Explorer</a>. </p>
-  <img src="http://dl.dropboxusercontent.com/u/54512470/Travel_Score_VIZ/img/screenshot.jpg" width="100%" alt="Error - static preview">
+  <p>This interactive graphic requires a browser with SVG support, such as <a href="https://www.google.com/chrome">Chrome</a>, <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a>, <a href="https://www.apple.com/safari/">Safari</a> or the latest <a href="https://windows.microsoft.com/en-us/internet-explorer/download-ie">Internet Explorer</a>. </p>
+  <img src="https://dl.dropboxusercontent.com/u/54512470/Travel_Score_VIZ/img/screenshot.jpg" width="100%" alt="Error - static preview">
   <div id="maincontainer" style="display:none;">
 		<![endif]-->
 <body>
 <div id = "map"></div>
 <body bgcolor="#555555">
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="http://d3js.org/topojson.v1.min.js"></script>
-<script src="http://d3js.org/queue.v1.min.js"></script>
-<script src="http://d3js.org/d3.geo.projection.v0.min.js" charset="utf-8"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="https://d3js.org/topojson.v1.min.js"></script>
+<script src="https://d3js.org/queue.v1.min.js"></script>
+<script src="https://d3js.org/d3.geo.projection.v0.min.js" charset="utf-8"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script>
 
 var width = 1400,
@@ -783,7 +791,7 @@ svg.append("svg:text")
 	.on("click", function() {window.open("http://mappable.info"); });
 
 // Text for Info popup
-info.html("<h3 style='margin-top: 15px;'>how your travel score is calculated:</h3><p>Based on the grid cells you've selected, three numbers are calculated:</p><OL><LI>The percentage of the world's countries that you've visited<LI>The share of the world's population that lives in these areas<LI>The share of the earth's land surface that lies inside the selected grid cells</OL><p>The overall travel score is the mean of these three numbers. Of course this calculation method is kind of arbitrary. It's just my approach to measure how much of the world a person has seen.</p><h3>where the data comes from:</h3><p>State boundaries by Natural Earth (Tom Patterson, Nathaniel Vaughn Kelso &amp; many others)<br>1:50m Cultural Vectors - 197 souvereign states, v. 2.0.0 (2012)  <A HREF='http://www.naturalearthdata.com/downloads/50m-cultural-vectors/'> link</A></p><p>Place labels by Natural Earth (Tom Patterson, Nathaniel Vaughn Kelso &amp; many others)<br>1:110m Cultural Vectors - Populated places, v. 2.0.0 (2012)  <A HREF='http://www.naturalearthdata.com/downloads/110m-cultural-vectors/'>link</A></p><p>Population data by CIESIN at Columbia University<br>Population Count Grid Future Estimates, v3 (2010)  <A HREF='http://sedac.ciesin.columbia.edu/data/set/gpw-v3-population-count-future-estimates/data-download'>link</A></p><p>Land area data by CIESIN at Columbia University<br>Land and Geographic Unit Area Grids, v3 (1990, 1995, 2000, 2005, 2010, 2015)  <A HREF='http://sedac.ciesin.columbia.edu/data/set/gpw-v3-land-geographic-unit-area/data-download'>link</A></p><h3>about this project:</h3><p>This project was realized by PatrickStotz (<A HREF='http://twitter.com/PatrickStotz'>@PatrickStotz</A>).</p><p>I'm endlessly fascinated by maps, dataviz &amp; urbanism, plus I love to travel! Having a large world map with pin needles hanging in our living room, I always wanted to build a modern, interactive version of this map.</p><p>If you're interested in the technical details behind this project take a look at the project description on <A HREF='http://mappable.info/projects/travel-score'>mappable.info</A></p><p>Want to get in touch with me, just contact me on <A HREF='http://twitter.com/PatrickStotz'>twitter</A> or at mappable(at)gmx.de</p><p>Please note, that this map is not optimised for Internet Explorer or older browsers in general. There might as well be problems on less powerful or mobile devices, as the visualizations takes heavy use of SVG in browser rendering.</p>").on("click", function (d) {return closeinfo(d);});
+info.html("<h3 style='margin-top: 15px;'>how your travel score is calculated:</h3><p>Based on the grid cells you've selected, three numbers are calculated:</p><OL><LI>The percentage of the world's countries that you've visited<LI>The share of the world's population that lives in these areas<LI>The share of the earth's land surface that lies inside the selected grid cells</OL><p>The overall travel score is the mean of these three numbers. Of course this calculation method is kind of arbitrary. It's just my approach to measure how much of the world a person has seen.</p><h3>where the data comes from:</h3><p>State boundaries by Natural Earth (Tom Patterson, Nathaniel Vaughn Kelso &amp; many others)<br>1:50m Cultural Vectors - 197 souvereign states, v. 2.0.0 (2012)  <A HREF='http://www.naturalearthdata.com/downloads/50m-cultural-vectors/'> link</A></p><p>Place labels by Natural Earth (Tom Patterson, Nathaniel Vaughn Kelso &amp; many others)<br>1:110m Cultural Vectors - Populated places, v. 2.0.0 (2012)  <A HREF='http://www.naturalearthdata.com/downloads/110m-cultural-vectors/'>link</A></p><p>Population data by CIESIN at Columbia University<br>Population Count Grid Future Estimates, v3 (2010)  <A HREF='http://sedac.ciesin.columbia.edu/data/set/gpw-v3-population-count-future-estimates/data-download'>link</A></p><p>Land area data by CIESIN at Columbia University<br>Land and Geographic Unit Area Grids, v3 (1990, 1995, 2000, 2005, 2010, 2015)  <A HREF='http://sedac.ciesin.columbia.edu/data/set/gpw-v3-land-geographic-unit-area/data-download'>link</A></p><h3>about this project:</h3><p>This project was realized by PatrickStotz (<A HREF='https://twitter.com/PatrickStotz'>@PatrickStotz</A>).</p><p>I'm endlessly fascinated by maps, dataviz &amp; urbanism, plus I love to travel! Having a large world map with pin needles hanging in our living room, I always wanted to build a modern, interactive version of this map.</p><p>If you're interested in the technical details behind this project take a look at the project description on <A HREF='http://mappable.info/projects/travel-score'>mappable.info</A></p><p>Want to get in touch with me, just contact me on <A HREF='https://twitter.com/PatrickStotz'>twitter</A> or at mappable(at)gmx.de</p><p>Please note, that this map is not optimised for Internet Explorer or older browsers in general. There might as well be problems on less powerful or mobile devices, as the visualizations takes heavy use of SVG in browser rendering.</p>").on("click", function (d) {return closeinfo(d);});
 info_out.style("top", "0px").style("left", "0px").html("").on("click", function (d) {return closeinfo(d);});
 
 
@@ -802,5 +810,25 @@ info.style("visibility", "hidden");
 info_out.style("visibility", "hidden");
 zoom_active = true; // re-enable zoom & pan
 }
+
+// Social sharing for Twitter / Facebook. Using jQuery to change tweet text interactively (including current travelscore).
+$(document).ready(function () {
+$('#btnTweet').click(function (e) {
+	score_for_sharing = document.getElementById("total_visited").textContent
+	var textToTweet = "I've explored " + score_for_sharing + " % of the world. What's your #travelscore? https://patrickstotz.github.io/Travel-Score/ by @PatrickStotz";
+	var twtLink = 'https://twitter.com/home?status=' + encodeURIComponent(textToTweet);
+	window.open(twtLink,'_blank');
+	});
+$('#btnFB').click(function (e) {
+	var fbLink = 'https://www.facebook.com/sharer/sharer.php?u=https://patrickstotz.github.io/Travel-Score/';
+	window.open(fbLink,'_blank');
+	});
+});
+</script>
+<div id="footer_container">
+	<p class="footer category" style="color:#DDDDDD">Share your score:</p>
+	<img class="footer_button footer" id="btnTweet" src="./img/t_logo.png"></button>
+	<img class="footer_button footer" id="btnFB" src="./img/f_logo.png"></button>
+</div>
 </script>
 </body>
